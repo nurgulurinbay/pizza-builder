@@ -1,0 +1,68 @@
+@startuml
+
+class Pizza {
+    - size: String
+    - crust: String
+    - sauce: String
+    - cheese: String
+    - toppings: List<String>
+    + Pizza(...)
+    + getSize(): String
+    + getCrust(): String
+    + getSauce(): String
+    + getCheese(): String
+    + getToppings(): List<String>
+}
+
+interface PizzaBuilder {
+    + setSize(size: String): PizzaBuilder
+    + setCrust(crust: String): PizzaBuilder
+    + setSauce(sauce: String): PizzaBuilder
+    + setCheese(cheese: String): PizzaBuilder
+    + addTopping(topping: String): PizzaBuilder
+    + build(): Pizza
+}
+
+abstract class BasePizzaBuilder {
+    # size: String
+    # crust: String
+    # sauce: String
+    # cheese: String
+    # toppings: List<String>
+    + setSize(size: String): PizzaBuilder
+    + setCrust(crust: String): PizzaBuilder
+    + setSauce(sauce: String): PizzaBuilder
+    + setCheese(cheese: String): PizzaBuilder
+    + addTopping(topping: String): PizzaBuilder
+    # createPizza(): Pizza
+}
+
+class ClassicPizzaBuilder {
+    + build(): Pizza
+}
+
+class SpicyPizzaBuilder {
+    + build(): Pizza
+}
+
+class PizzaDirector {
+    + makeClassicPizza(builder: PizzaBuilder): Pizza
+    + makeSpicyPizza(builder: PizzaBuilder): Pizza
+}
+
+class Main {
+    + main(args: String[]): void
+}
+
+PizzaBuilder <|.. BasePizzaBuilder
+BasePizzaBuilder <|-- ClassicPizzaBuilder
+BasePizzaBuilder <|-- SpicyPizzaBuilder
+
+PizzaBuilder ..> Pizza : creates
+PizzaDirector ..> PizzaBuilder : uses
+PizzaDirector ..> Pizza : creates
+Main ..> PizzaDirector : uses
+Main ..> ClassicPizzaBuilder : creates
+Main ..> SpicyPizzaBuilder : creates
+
+@enduml
